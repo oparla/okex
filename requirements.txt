@@ -21,3 +21,4 @@ streamlit_folium
 opencv-python-headless==4.5.4.60
 streamlit==0.84.2
 streamlit-webrtc==0.35.1
+websocket-client
