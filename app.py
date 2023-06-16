@@ -1,40 +1,30 @@
 import streamlit as st
+import requests
 
-def add(a, b):
-    return a + b
-
-def subtract(a, b):
-    return a - b
-
-def multiply(a, b):
-    return a * b
-
-def divide(a, b):
-    if b != 0:
-        return a / b
-    else:
-        return "Error: Division by zero"
+def get_all_products(consumer_key, consumer_secret):
+    url = "https://pgkteknologi.com/wp-json/wc/v3/products"
+    response = requests.get(url, auth=(consumer_key, consumer_secret))
+    data = response.json()
+    return data
 
 def main():
-    st.title("Kalkulator Sederhana")
+    st.title("Daftar Produk dari WooCommerce")
     
-    num1 = st.number_input("Masukkan angka pertama:")
-    num2 = st.number_input("Masukkan angka kedua:")
+    consumer_key = "ck_1eab87430222326d0a5a0b92cf46c5b67077bd9b"
+    consumer_secret = "cs_c5b1dfd2fce307faa6c91fe770b9fcd94cfcb341"
     
-    operation = st.selectbox("Pilih operasi:", ("Penjumlahan", "Pengurangan", "Perkalian", "Pembagian"))
-    
-    result = None
-    
-    if operation == "Penjumlahan":
-        result = add(num1, num2)
-    elif operation == "Pengurangan":
-        result = subtract(num1, num2)
-    elif operation == "Perkalian":
-        result = multiply(num1, num2)
-    elif operation == "Pembagian":
-        result = divide(num1, num2)
-    
-    st.write("Hasil:", result)
+    try:
+        products = get_all_products(consumer_key, consumer_secret)
+        
+        st.write("Jumlah Produk:", len(products))
+        
+        for product in products:
+            st.write("Nama Produk:", product["name"])
+            st.write("Harga:", product["regular_price"])
+            st.write("Deskripsi:", product["description"])
+            st.write("------------------------------")
+    except requests.exceptions.RequestException as e:
+        st.write("Terjadi kesalahan saat mengambil data produk:", e)
 
 if __name__ == '__main__':
     main()
