@@ -1,10 +1,14 @@
-import streamlit as st
+from geopy.geocoders import Nominatim
 
-# URL video YouTube
-video_url = "https://www.youtube.com/watch?v=lXM1igUSkJM&pp=ygUGdGhvbWFz"
+# Koordinat latitude dan longitude
+latitude = -2.9760735
+longitude = 104.7754307
 
-# Menampilkan video dari YouTube dalam mode layar penuh dengan pemutaran otomatis
-st.video(video_url, start_time=0, format='auto', start_paused=True)
+# Membuat objek geocoder
+geolocator = Nominatim(user_agent="my-app")
 
-# Mengubah tata letak aplikasi menjadi layar penuh
-st.markdown('<style>body{margin: 0;}</style>', unsafe_allow_html=True)
+# Mendapatkan informasi lokasi berdasarkan koordinat
+location = geolocator.reverse((latitude, longitude))
+
+# Menampilkan hasil lokasi
+print(location.address)
