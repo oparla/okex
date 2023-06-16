@@ -13,11 +13,14 @@ def main():
     
     currency = "idr"  # Ubah sesuai dengan kode mata uang yang kamu inginkan
     
-    bcd_price = get_price('bitcoin-diamond', currency)
-    bat_price = get_price('basic-attention-token', currency)
-    
-    st.write("Harga Bitcoin Diamond (BCD):", currency.upper(), bcd_price)
-    st.write("Harga Basic Attention Token (BAT):", currency.upper(), bat_price)
+    try:
+        bcd_price = get_price('bitcoin-diamond', currency)
+        bat_price = get_price('basic-attention-token', currency)
+        
+        st.write("Harga Bitcoin Diamond (BCD):", currency.upper(), bcd_price)
+        st.write("Harga Basic Attention Token (BAT):", currency.upper(), bat_price)
+    except KeyError:
+        st.write("Tidak dapat memperoleh data harga saat ini.")
 
 if __name__ == '__main__':
     main()
