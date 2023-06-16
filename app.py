@@ -7,6 +7,16 @@ def get_all_products(consumer_key, consumer_secret):
     data = response.json()
     return data
 
+def get_price(product):
+    if "price" in product:
+        return product["price"]
+    elif "regular_price" in product:
+        return product["regular_price"]
+    elif "sale_price" in product:
+        return product["sale_price"]
+    else:
+        return "Harga tidak tersedia"
+
 def main():
     st.title("Daftar Produk dari WooCommerce")
     
@@ -20,7 +30,7 @@ def main():
         
         for product in products:
             st.write("Nama Produk:", product["name"])
-            st.write("Harga:", product["regular_price"])
+            st.write("Harga:", get_price(product))
             st.write("Deskripsi:", product["description"])
             st.write("------------------------------")
     except requests.exceptions.RequestException as e:
