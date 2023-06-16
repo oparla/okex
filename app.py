@@ -1,26 +1,20 @@
-# Copyright (C) 2020 Simon Biggs
-
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-
-#     http://www.apache.org/licenses/LICENSE-2.0
-
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-import pathlib
-
-import pydicom
-
 import streamlit as st
+import requests
 
+def get_price(coin):
+    url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd"
+    response = requests.get(url)
+    data = response.json()
+    price = data[coin]['usd']
+    return price
 
-st.title("Hello World!")
+def main():
+    st.title("Harga BCD dan BAT")
+    bcd_price = get_price('bitcoin-diamond')
+    bat_price = get_price('basic-attention-token')
+    
+    st.write("Harga Bitcoin Diamond (BCD): $", bcd_price)
+    st.write("Harga Basic Attention Token (BAT): $", bat_price)
 
-st.write(pathlib.Path.home())
-
-st.write(pydicom)
+if __name__ == '__main__':
+    main()
