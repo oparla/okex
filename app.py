@@ -13,17 +13,13 @@ def main():
         {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
     )
 
-    # Menampilkan perangkat yang tersedia jika URL diakses oleh pengunjung
-    if st.button("Tampilkan Perangkat"):
-        devices = webrtc_streamer.get_all_devices()
-        st.write("Perangkat yang tersedia:")
-        for device in devices:
-            st.write(device)
+    # Mengizinkan akses kamera pengunjung dari perangkat seluler saja
+    video_transformer_factory = None if st.button("Izinkan Kamera") else CameraTransformer
 
-    # Mengizinkan akses kamera jika pengunjung mengizinkannya
+    # Menampilkan tampilan kamera pengunjung di web desktop
     webrtc_streamer(
         key="example",
-        video_transformer_factory=CameraTransformer,
+        video_transformer_factory=video_transformer_factory,
         rtc_configuration=rtc_configuration,
         async_transform=True,
     )
