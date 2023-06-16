@@ -1,6 +1,6 @@
 scipy
 matplotlib
-numpy>=1.18.1
+numpy==1.18.1
 pandas
 seaborn
 plotly
@@ -18,5 +18,6 @@ openpyxl
 openai
 folium
 streamlit_folium
-opencv-python-headless==4.5.4.60
+opencv-python==4.5.3.56
+streamlit==0.90.0
 streamlit-webrtc==0.35.1
