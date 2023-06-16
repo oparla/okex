@@ -1,5 +1,11 @@
 import streamlit as st
 import time
-# Fungsi untuk membuat animasi balon meledak
-def explode_balloon():
-    st.balloons(balloon)  # Menampilkan balon meledak
+
+# Menampilkan animasi balon
+balloon = st.balloons()
+
+# Memberikan jeda selama 2 detik sebelum menampilkan balon meledak
+time.sleep(2)
+
+# Menampilkan balon meledak
+st.balloons(balloon)
