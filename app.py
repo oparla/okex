@@ -1,36 +1,26 @@
 import streamlit as st
-import pandas as pd
 import requests
-from bs4 import BeautifulSoup
 
-def scrape_table(url):
+def get_indodax_price(pair):
+    url = f'https://indodax.com/api/ticker/{pair}'
     response = requests.get(url)
+    
     if response.status_code == 200:
-        soup = BeautifulSoup(response.content, 'html.parser')
-        table = soup.find('table')
-        rows = table.find_all('tr')
-
-        # Mengambil judul kolom
-        header_row = rows[0]
-        headers = [header.get_text(strip=True) for header in header_row.find_all('th')]
-
-        # Mengambil data baris
-        data_rows = rows[1:]
-        data = []
-        for row in data_rows:
-            cells = row.find_all('td')
-            row_data = [cell.get_text(strip=True) for cell in cells]
-            data.append(row_data)
-
-        # Membuat DataFrame dari data tabel
-        df = pd.DataFrame(data, columns=headers)
-        return df
+        data = response.json()
+        return data['ticker']['last']
     else:
         st.error(f'Error: {response.status_code}')
         return None
 
-url = 'https://pgkreload.com/history'
-table_data = scrape_table(url)
+# Mendapatkan harga BAT dan BCD
+bat_price = get_indodax_price('batidr')
+bcd_price = get_indodax_price('bcdidr')
 
-if table_data is not None:
-    st.table(table_data)
+# Menampilkan harga menggunakan Streamlit
+if bat_price is not None:
+    st.write('Harga BAT (Basic Attention Token) di Indodax:')
+    st.write(f'IDR {bat_price}')
+
+if bcd_price is not None:
+    st.write('Harga BCD (Bitcoin Diamond) di Indodax:')
+    st.write(f'IDR {bcd_price}')
