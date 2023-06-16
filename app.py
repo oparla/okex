@@ -1,23 +1,21 @@
 import streamlit as st
 import pandas as pd
-import requests
 
-def get_transaction_history():
-    url = "https://pgkreload.com/history"
-    response = requests.get(url)
-    data = response.json()
-    return data
+def get_transaction_history(url):
+    try:
+        df = pd.read_html(url)[0]  # Membaca tabel dari URL
+        return df
+    except Exception as e:
+        st.error(f"Terjadi kesalahan dalam memuat tabel: {e}")
+        return None
 
 def main():
     st.title("Data Transaksi")
 
-    # Mendapatkan data transaksi
-    transaction_data = get_transaction_history()
+    url = "https://pgkreload.com/history"  # Ganti dengan URL yang sesuai
+    df = get_transaction_history(url)
 
-    if transaction_data:
-        # Menyusun data transaksi menjadi DataFrame
-        df = pd.DataFrame(transaction_data)
-
+    if df is not None:
         st.write("Data Transaksi:")
         st.dataframe(df)
     else:
